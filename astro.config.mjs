@@ -1,16 +1,18 @@
 import { defineConfig } from "astro/config";
 import tailwindcss from "@tailwindcss/vite";
 import sitemap from "@astrojs/sitemap";
-import vercel from "@astrojs/vercel";
+import cloudflare from "@astrojs/cloudflare";
+
 export default defineConfig({
   vite: {
-      plugins: [tailwindcss()],
-	},
+    plugins: [tailwindcss()],
+  },
 
-  // add yur domain name here
-  site: "https://planetaryescape.xyz",
+  site: "https://planetaryescape.co.za",
 
   compressHTML: true,
   integrations: [sitemap()],
-  adapter: vercel(),
+  adapter: cloudflare({
+    configPath: process.env.SST_WRANGLER_PATH,
+  }),
 });

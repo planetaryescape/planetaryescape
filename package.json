@@ -5,25 +5,27 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "deploy:dev": "sst deploy --stage=dev",
+    "deploy:prod": "sst deploy --stage=prod",
+    "astro": "astro",
+    "dev:sst": "sst dev --stage=dev"
   },
   "dependencies": {
-    "@astrojs/preact": "4.1.0",
-    "@astrojs/sitemap": "3.5.1",
-    "@astrojs/vercel": "^8.2.7",
-    "astro": "5.13.5",
-    "hono": "^4.6.3",
-    "npm": "^10.8.3",
-    "preact": "^10.23.2",
-    "sst": "^3.1.47"
+    "@astrojs/cloudflare": "^14.1.2",
+    "@astrojs/preact": "6.0.1",
+    "@astrojs/sitemap": "3.7.3",
+    "astro": "7.0.7",
+    "hono": "^4.12.28",
+    "preact": "^10.29.7",
+    "sst": "^4.17.0"
   },
   "devDependencies": {
-    "@tailwindcss/forms": "^0.5.9",
-    "@tailwindcss/typography": "^0.5.15",
-    "@tailwindcss/vite": "^4.0.0-alpha.23",
-    "tailwindcss": "^4.0.0-alpha.23"
+    "@cloudflare/workers-types": "^5.20260708.1",
+    "@tailwindcss/forms": "^0.5.11",
+    "@tailwindcss/typography": "^0.5.20",
+    "@tailwindcss/vite": "^4.3.2",
+    "tailwindcss": "^4.3.2"
   }
 }

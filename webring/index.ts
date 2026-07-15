@@ -1,6 +1,5 @@
 import { Hono } from "hono";
 import { prettyJSON } from "hono/pretty-json";
-import { handle } from "hono/aws-lambda";
 import { sites } from "./sites";
 
 const app = new Hono();
@@ -10,17 +9,14 @@ app.get("/webring/list", (c) => {
 	return c.json(sites);
 });
 
-// Endpoint to handle redirection based on search params
 app.get("/webring", (c) => {
 	const { id, action } = c.req.query();
 
-	// If no id is provided, redirect to a random site
 	if (!id) {
 		const randomSite = sites[Math.floor(Math.random() * sites.length)];
 		return c.redirect(randomSite.url);
 	}
 
-	// Find the index of the site with the given id
 	const index = sites.findIndex((site) => site.id === id);
 
 	if (index === -1) {
@@ -29,11 +25,10 @@ app.get("/webring", (c) => {
 
 	let targetIndex = index;
 
-	// Determine the action for redirection
 	if (action === "next") {
-		targetIndex = (index + 1) % sites.length; // Wrap around to the first site
+		targetIndex = (index + 1) % sites.length;
 	} else if (action === "prev") {
-		targetIndex = (index - 1 + sites.length) % sites.length; // Wrap around to the last site
+		targetIndex = (index - 1 + sites.length) % sites.length;
 	} else if (action === "random") {
 		targetIndex = Math.floor(Math.random() * sites.length);
 	}
@@ -50,10 +45,4 @@ app.get("/webring/list/html", (c) => {
 	);
 });
 
-export const handler = handle(app);
-// export default app;
-
-// export default {
-// 	port: 3111,
-// 	fetch: app.fetch,
-// };
+export default app;
