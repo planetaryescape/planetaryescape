@@ -10,7 +10,6 @@ declare module "sst" {
       "type": "sst.cloudflare.Astro"
       "url": string
     }
-    "Webring": import("@cloudflare/workers-types").Service
   }
 }
 

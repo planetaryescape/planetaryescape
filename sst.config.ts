@@ -14,19 +14,16 @@ export default $config({
       ? "planetaryescape.co.za"
       : `${$app.stage}.planetaryescape.co.za`;
 
-    const site = new sst.cloudflare.Astro("Site", {
+    const site = new sst.cloudflare.StaticSiteV2("Site", {
       domain,
-    });
-
-    const api = new sst.cloudflare.Worker("Webring", {
-      handler: "webring/index.ts",
-      url: true,
-      domain: `api.${domain}`,
+      build: {
+        command: "bun run build",
+        output: "dist",
+      },
     });
 
     return {
       site: site.url,
-      api: api.url,
     };
   },
 });
