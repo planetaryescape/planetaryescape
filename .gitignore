@@ -20,3 +20,5 @@ pnpm-debug.log*
 
 .astro
 .sst
+.wrangler/
+.vercel
