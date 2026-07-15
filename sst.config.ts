@@ -18,7 +18,7 @@ export default $config({
       domain,
       build: {
         command: "bun run build",
-        output: "dist",
+        output: "dist/client",
       },
     });
 
