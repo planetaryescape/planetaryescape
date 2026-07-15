@@ -3,35 +3,12 @@ import BaseHead from "@/components/BaseHead.astro";
 import Navigation from "@/components/global/Navigation.astro";
 ---
 
-<html lang="en" class="selection:bg-orange selection:text-white">
+<html lang="en" class="selection:bg-orange selection:text-white bg-black" style="background:#1e1e1e;color-scheme:dark;">
   <head>
     <BaseHead />
   </head>
   <body class="pb-10 mx-auto bg-black 2xl:max-w-7xl">
     <Navigation />
     <slot />
-    <footer class="border-t border-white/20">
-      <div class="flex items-center justify-between px-8 py-6 mx-auto border-white/20 border-x max-w-7xl">
-        <p class="text-xs text-eagle uppercase font-display">&copy; {new Date().getFullYear()} Planetary Escape</p>
-        <div class="flex items-center gap-6">
-          <a
-            href="https://github.com/planetaryescape"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-xs text-eagle uppercase font-display duration-200 hover:text-white"
-          >
-            GitHub
-          </a>
-          <a
-            href="https://discord.gg/pFvKSmzWpH"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="text-xs text-eagle uppercase font-display duration-200 hover:text-white"
-          >
-            Discord
-          </a>
-        </div>
-      </div>
-    </footer>
   </body>
 </html>
