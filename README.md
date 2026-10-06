@@ -1,5 +1,24 @@
 # Astro & Tailwind CSS Starter Kit by lexingtonthemes.com
 
+## SEO and social previews
+
+Each page passes its title and description to `BaseLayout`. The shared head uses
+the production `site` in `astro.config.mjs` for canonical and social-preview URLs.
+`robots.txt` points crawlers to the generated sitemap.
+
+Run `bun run build && bun test` to check the generated metadata and preview asset.
+
+The social image source is `scripts/og-image.html`. To regenerate the PNG with
+`agent-browser` installed, run these commands from the repository root:
+
+```sh
+agent-browser --session og-image open "file://$PWD/scripts/og-image.html"
+agent-browser --session og-image set viewport 1200 630
+agent-browser --session og-image eval 'document.fonts.ready.then(() => document.fonts.check("88px Basement"))'
+agent-browser --session og-image screenshot public/og-image.png
+agent-browser --session og-image close
+```
+
 ## License
 
 This template is open-source software licensed under the [GPL-3.0 license](https://opensource.org/licenses/GPL-3.0). Feel free to fork, modify, and use it in your projects.
