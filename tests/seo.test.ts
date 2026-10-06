@@ -1,4 +1,5 @@
 import { describe, expect, test } from "bun:test";
+import { fileURLToPath } from "node:url";
 
 const site = "https://planetaryescape.co.za";
 const pages = [
@@ -25,7 +26,7 @@ const pages = [
 ];
 
 const build = Bun.spawn(["bun", "run", "build"], {
-  cwd: new URL("..", import.meta.url).pathname,
+  cwd: fileURLToPath(new URL("..", import.meta.url)),
   stdout: "inherit",
   stderr: "inherit",
 });
@@ -116,7 +117,7 @@ describe("built SEO metadata", () => {
   test("built styles use published root-relative font URLs", async () => {
     const root = new URL("../dist/client/", import.meta.url);
     let styles = "";
-    for await (const path of new Bun.Glob("_astro/*.css").scan(root.pathname)) {
+    for await (const path of new Bun.Glob("_astro/*.css").scan(fileURLToPath(root))) {
       styles += await Bun.file(new URL(path, root)).text();
     }
     expect(styles).toMatch(/url\(["']?\/fonts\/BSBlack\.woff2/);
