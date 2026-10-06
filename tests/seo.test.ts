@@ -2,11 +2,37 @@ import { describe, expect, test } from "bun:test";
 
 const site = "https://planetaryescape.co.za";
 const pages = [
-  { path: "", title: "Planetary Escape | Software Services Network" },
-  { path: "opensauce", title: "Open Source Projects | Planetary Escape" },
-  { path: "discord", title: "Developer Discord Community | Planetary Escape" },
-  { path: "webring", title: "Developer Webring | Planetary Escape" },
+  {
+    path: "",
+    title: "Planetary Escape | Software Services Network",
+    description: "A network of developers building software together. Explore our projects, software services, and open source tools, or join our developer community.",
+  },
+  {
+    path: "opensauce",
+    title: "Open Source Projects | Planetary Escape",
+    description: "Explore Planetary Escape's open source tools built with Effect, Rust, and Go, including Spotuify, mxr, pulse, opensound, videoshare, and blah.chat.",
+  },
+  {
+    path: "discord",
+    title: "Developer Discord Community | Planetary Escape",
+    description: "Join the Planetary Escape Discord community to connect with developers, share projects, and collaborate on software and open source tools.",
+  },
+  {
+    path: "webring",
+    title: "Developer Webring | Planetary Escape",
+    description: "Meet the developers in the Planetary Escape network. Visit the personal sites of Bhekani, Guide, Thanda, Tyler, and Atomikon Dev.",
+  },
 ];
+
+const build = Bun.spawn(["bun", "run", "build"], {
+  cwd: new URL("..", import.meta.url).pathname,
+  stdout: "inherit",
+  stderr: "inherit",
+});
+const exitCode = await build.exited;
+if (exitCode !== 0) {
+  throw new Error(`SEO tests require a fresh build. bun run build failed with exit code ${exitCode}; fix the build before rerunning tests.`);
+}
 
 describe("built SEO metadata", () => {
   for (const page of pages) {
@@ -47,9 +73,8 @@ describe("built SEO metadata", () => {
       expect(metadata.get("og:url")).toEqual([canonical]);
       expect(metadata.get("og:title")).toEqual([page.title]);
       expect(metadata.get("twitter:title")).toEqual([page.title]);
-      const descriptions = metadata.get("description") ?? [];
-      expect(descriptions).toHaveLength(1);
-      expect(descriptions?.[0]?.length).toBeGreaterThan(50);
+      const descriptions = [page.description];
+      expect(metadata.get("description")).toEqual(descriptions);
       expect(metadata.get("og:description")).toEqual(descriptions);
       expect(metadata.get("twitter:description")).toEqual(descriptions);
       expect(metadata.get("og:site_name")).toEqual(["Planetary Escape"]);
@@ -86,5 +111,18 @@ describe("built SEO metadata", () => {
     const header = new DataView(image);
     expect(header.getUint32(16)).toBe(1200);
     expect(header.getUint32(20)).toBe(630);
+  });
+
+  test("built styles use published root-relative font URLs", async () => {
+    const root = new URL("../dist/client/", import.meta.url);
+    let styles = "";
+    for await (const path of new Bun.Glob("_astro/*.css").scan(root.pathname)) {
+      styles += await Bun.file(new URL(path, root)).text();
+    }
+    expect(styles).toMatch(/url\(["']?\/fonts\/BSBlack\.woff2/);
+    expect(styles).not.toContain("../fonts/");
+    for (const extension of ["woff2", "woff", "eot"]) {
+      expect(await Bun.file(new URL(`fonts/BSBlack.${extension}`, root)).exists()).toBe(true);
+    }
   });
 });
