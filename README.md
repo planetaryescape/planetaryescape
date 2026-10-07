@@ -1,5 +1,23 @@
 # Astro & Tailwind CSS Starter Kit by lexingtonthemes.com
 
+## SEO and social previews
+
+Each page passes its title and description to `BaseLayout`. The shared head uses
+the production `site` in `astro.config.mjs` for canonical and social-preview URLs.
+`robots.txt` points crawlers to the generated sitemap.
+
+Run `bun run test` (or `bun test`) to check the generated metadata and preview
+asset. The suite builds the current source first, so it cannot read stale output.
+
+`scripts/generate-og.ts` uses Satori and Resvg with the bundled Basement WOFF
+font to generate the 1200×630 social image before Astro development and builds. The PNG is
+a generated asset, not tracked in Git. No browser or remote font is required.
+To regenerate it without building the site:
+
+```sh
+bun run generate:og
+```
+
 ## License
 
 This template is open-source software licensed under the [GPL-3.0 license](https://opensource.org/licenses/GPL-3.0). Feel free to fork, modify, and use it in your projects.

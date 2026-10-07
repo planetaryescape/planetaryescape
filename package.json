@@ -4,8 +4,10 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "bun run generate:og && astro dev",
+    "build": "bun run generate:og && astro build",
+    "generate:og": "bun scripts/generate-og.ts",
+    "test": "bun test",
     "preview": "astro preview",
     "deploy:dev": "sst deploy --stage=dev",
     "deploy:prod": "sst deploy --stage=prod",
@@ -23,9 +25,11 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^5.20260708.1",
+    "@resvg/resvg-js": "^2.6.2",
     "@tailwindcss/forms": "^0.5.11",
     "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.3.2",
+    "satori": "^0.35.1",
     "tailwindcss": "^4.3.2"
   }
 }

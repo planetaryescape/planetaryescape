@@ -1,11 +1,18 @@
 ---
 import BaseHead from "@/components/BaseHead.astro";
 import Navigation from "@/components/global/Navigation.astro";
+
+interface Props {
+  title: string;
+  description: string;
+}
+
+const { title, description } = Astro.props;
 ---
 
 <html lang="en" class="selection:bg-orange selection:text-white bg-black" style="background:#1e1e1e;color-scheme:dark;">
   <head>
-    <BaseHead />
+    <BaseHead title={title} description={description} />
   </head>
   <body class="pb-10 mx-auto bg-black 2xl:max-w-7xl">
     <Navigation />
