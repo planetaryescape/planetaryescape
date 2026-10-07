@@ -9,12 +9,13 @@ the production `site` in `astro.config.mjs` for canonical and social-preview URL
 Run `bun run test` (or `bun test`) to check the generated metadata and preview
 asset. The suite builds the current source first, so it cannot read stale output.
 
-The social image source is `scripts/og-image.html`. To regenerate the PNG with
-`agent-browser` installed, run this command from the repository root. The script
-stops if the Basement font fails to load and closes its browser session on exit.
+`scripts/generate-og.ts` uses Satori and Resvg with the bundled Basement WOFF
+font to generate the 1200×630 social image before Astro development and builds. The PNG is
+a generated asset, not tracked in Git. No browser or remote font is required.
+To regenerate it without building the site:
 
 ```sh
-bash scripts/generate-og-image.sh
+bun run generate:og
 ```
 
 ## License

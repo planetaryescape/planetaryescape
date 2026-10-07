@@ -25,8 +25,9 @@ const pages = [
   },
 ];
 
+const projectRoot = fileURLToPath(new URL("..", import.meta.url));
 const build = Bun.spawn(["bun", "run", "build"], {
-  cwd: fileURLToPath(new URL("..", import.meta.url)),
+  cwd: projectRoot,
   stdout: "inherit",
   stderr: "inherit",
 });
@@ -112,6 +113,18 @@ describe("built SEO metadata", () => {
     const header = new DataView(image);
     expect(header.getUint32(16)).toBe(1200);
     expect(header.getUint32(20)).toBe(630);
+  });
+
+  test("social image generation is deterministic and matches the published asset", async () => {
+    const imageURL = new URL("../public/og-image.png", import.meta.url);
+    const published = await Bun.file(new URL("../dist/client/og-image.png", import.meta.url)).bytes();
+    const generation = Bun.spawn(["bun", "run", "generate:og"], {
+      cwd: projectRoot,
+      stdout: "inherit",
+      stderr: "inherit",
+    });
+    expect(await generation.exited).toBe(0);
+    expect(await Bun.file(imageURL).bytes()).toEqual(published);
   });
 
   test("built styles use published root-relative font URLs", async () => {
